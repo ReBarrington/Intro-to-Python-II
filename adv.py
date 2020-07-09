@@ -1,25 +1,26 @@
 from room import Room
+# from room import Room_Items
 from player import Player
 
 # Declare all the rooms
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+                     "North of you, the cave mount beckons", ["key"]),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-    passages run north and east."""),
+    passages run north and east.""", []),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
     into the darkness. Ahead to the north, a light flickers in
-    the distance, but there is no way across the chasm."""),
+    the distance, but there is no way across the chasm.""", ["knife"]),
 
     'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-    to north. The smell of gold permeates the air."""),
+    to north. The smell of gold permeates the air.""", []),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
     chamber! Sadly, it has already been completely emptied by
-    earlier adventurers. The only exit is to the south."""),
+    earlier adventurers. The only exit is to the south.""", []),
 }
 
 
@@ -39,7 +40,7 @@ room['treasure'].s_to = room['narrow']
 #
 
 # Make a new player object that is currently in the 'outside' room.
-player = Player(room['outside'])
+player = Player(room['outside'], [])
 
 # Write a loop that:
 #
@@ -53,40 +54,62 @@ player = Player(room['outside'])
 # If the user enters "q", quit the game.
 
 while True:
+
     current_room = player.current_room
+    inventory = player.inventory
+    room_items = Room(current_room.name, current_room.description, current_room.items).items
+    # print(room_items, ' is room items!!!')
+   
     print(f" \n You are in the {current_room.name}")
-    print(player.current_room.description)
+    print(current_room.description)
+    print(f"Things in this room: {room_items}")
+    print(f"\n Your inventory: {player.inventory}")
 
-    direction = input(" \n Where would you like to go? (n, s, e, w) ")
+    decision = input(" \n Where would you like to do? ")
 
-    if direction ==  'n':
+    if decision == 'help':
+        print(" \n Pick a direction to travel: n, e, s, w \n Or get [item name] drop [item name] \n or q to quit")
+    elif decision ==  'n':
         print("You head north")
         try:
-           player = Player(current_room.n_to)
+           player = Player(current_room.n_to, inventory)
         except AttributeError:
             print(" \n YOU CANNOT GO NORTH. \n")
             print("Please pick a different direction. \n")
 
-    elif direction == 's':
+    elif decision == 's':
         print("You head south.")
         try:
-            player = Player(current_room.s_to)
+            player = Player(current_room.s_to, inventory)
         except AttributeError:
             print(" \n YOU CANNOT GO SOUTH. \n")
             print("Please pick a different direction. \n")
 
-    elif direction == 'e':
+    elif decision == 'e':
         print("You head east.")
         try:
-            player = Player(current_room.e_to)
+            player = Player(current_room.e_to, inventory)
         except AttributeError:
             print(" \n YOU CANNOT GO EAST. \n")
             print("Please pick a different direction. \n")
 
-    elif direction == 'w':
+    elif decision == 'w':
         print("You head west.")
         try:
-            player = Player(current_room.w_to)
+            player = Player(current_room.w_to, inventory)
         except AttributeError:
             print(" \n YOU CANNOT GO WEST. \n")
             print("Please pick a different direction. \n")
+
+    elif decision == 'q':
+        quit()
+
+    for item in room_items:
+        if decision == f"get {item}":
+            print(f"\n You pick up the {item}")
+            player.get_item(item)
+    
+    for item in player.inventory:
+          if decision == f"drop {item}":
+            print(f"\n You drop the {item}")
+            player.drop_item(item)
