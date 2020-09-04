@@ -3,14 +3,11 @@
 A text-based Adventure
 
 
-* Created the input command parser in `adv.py` which allows the program to receive player input and commands to move to rooms
+* The input command parser in `adv.py` allows the program to receive player input and commands to move to rooms
   in the four cardinal directions.
-* Examples of valid non-directional commands are "take coins" or "drop sword".
-* Filled out Player and Room classes in `player.py` and `room.py`
-* Made rooms able to hold multiple items
-* Made the player able to carry multiple items
-* Added items to the game that the user can carry around
-* Added `get [ITEM_NAME]` and `drop [ITEM_NAME]` commands to the parser
+* Examples of valid non-directional commands are `get [ITEM_NAME]` and `drop [ITEM_NAME]` 
+* Rooms are able to hold multiple items
+* The player is able to carry multiple items
 
 ## Specification
 
